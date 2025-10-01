@@ -189,3 +189,22 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node,macos,linux
+
+# === ACIACAM: credenciales y temporales ===
+.env
+.env.*
+*.pem
+*.key
+*.p12
+aciacam-service-account.json
+
+# Sesiones/WhatsApp y archivos temporales
+.wwebjs_auth/
+tmp/
+
+# Cachés de navegador / perfiles de automatización
+.wpp_profile/
+.wpp_profile/**
+
+# Sistema
+.DS_Store
