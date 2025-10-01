@@ -1,0 +1,9 @@
+{
+  "name": "aciacam-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "release": "standard-version",
+    "test": "echo \"(opcional) agrega tus tests\" && exit 0"
+  }
+}
