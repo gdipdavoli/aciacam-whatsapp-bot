@@ -4,8 +4,23 @@
   "private": true,
   "scripts": {
     "release": "standard-version",
-    "test": "echo \"(opcional) agrega tus tests\" && exit 0"
-  },
+    "test": "echo \"(opcional) agrega tus tests\" && exit 0",
+
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
+
+    "deploy:stg": "gcloud run deploy aciacam-whatsapp-bot-stg --region us-central1 --source . --allow-unauthenticated --env-vars-file=envvars.yaml --update-secrets OPENAI_API_KEY=OPENAI_API_KEY:latest --memory=1Gi --cpu=1 --concurrency=1 --timeout=600",
+    "deploy:prod": "gcloud run deploy aciacam-whatsapp-bot --region us-central1 --source . --allow-unauthenticated --env-vars-file=envvars.yaml --update-secrets OPENAI_API_KEY=OPENAI_API_KEY:latest --memory=1Gi --cpu=1 --concurrency=1 --timeout=600",
+
+    "logs:stg": "gcloud beta run services logs tail aciacam-whatsapp-bot-stg --region us-central1",
+    "logs:prod": "gcloud beta run services logs tail aciacam-whatsapp-bot --region us-central1",
+
+    "state:stg": "open https://aciacam-whatsapp-bot-stg-466998795303.us-central1.run.app/state || true",
+    "state:prod": "open https://aciacam-whatsapp-bot-466998795303.us-central1.run.app/state || true",
+
+    "test:mongo": "node test-mongo.js"
+}
+
   "dependencies": {
     "@ffprobe-installer/ffprobe": "^2.1.2",
     "axios": "^1.12.2",
