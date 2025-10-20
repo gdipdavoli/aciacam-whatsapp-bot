@@ -281,5 +281,5 @@ setLogoutFn(async () => {
     console.warn('force-qr/logout warn:', e?.message || e);
     setClientState('LOGOUT_FAILED');
   }
-});
+})();
 
