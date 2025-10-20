@@ -1,0 +1,24 @@
+{
+  "name": "aciacam-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "release": "standard-version",
+    "test": "echo \"(opcional) agrega tus tests\" && exit 0"
+  },
+  "dependencies": {
+    "@ffprobe-installer/ffprobe": "^2.1.2",
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "ffmpeg-static": "^5.2.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "googleapis": "^161.0.0",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.1",
+    "openai": "^6.1.0",
+    "qrcode": "^1.5.4",
+    "whatsapp-web.js": "^1.34.1",
+    "wwebjs-mongo": "^1.1.0"
+  }
+}

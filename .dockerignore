@@ -1,0 +1,11 @@
+node_modules
+.npm
+.git
+.gitignore
+.wwebjs_auth
+.wpp_profile
+tmp
+.DS_Store
+.env
+.env.*
+aciacam-service-account.json

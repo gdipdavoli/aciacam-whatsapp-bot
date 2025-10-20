@@ -1,0 +1,28 @@
+# Node
+node_modules/
+dist/
+coverage/
+*.log
+npm-debug.log*
+
+# Entornos / secretos (no subir)
+.env
+*.env
+*.local.env
+envvars.yaml
+aciacam-service-account.json
+*service-account*.json
+
+# WhatsApp web.js (sesiones/cache locales)
+.wwebjs_auth/
+.wwebjs_cache/
+.wwebjs_*/
+*.session
+*.sqlite
+*.db
+
+# Miscelánea
+.DS_Store
+# secretos locales
+envvars.txt
+*.rtf
