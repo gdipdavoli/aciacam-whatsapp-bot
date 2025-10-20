@@ -64,6 +64,8 @@ let client; // se inicializa dentro de la IIFE
     }),
     puppeteer: {
       headless: true,
+      executablePath: '/usr/bin/google-chrome', // ruta típica en Cloud Run
+      timeout: 60000, // 60s para iniciar el navegador
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
