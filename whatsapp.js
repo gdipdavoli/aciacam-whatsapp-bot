@@ -269,17 +269,18 @@ let client; // se inicializa dentro de la IIFE
 
   // permitir que server.js pueda forzar logout → nuevo QR
 setLogoutFn(async () => {
-  try {
-    if (client && typeof client.logout === 'function') {
-      await client.logout();
-    } else if (client && typeof client.destroy === 'function') {
-      await client.destroy();
+    try {
+      if (client && typeof client.logout === 'function') {
+        await client.logout();
+      } else if (client && typeof client.destroy === 'function') {
+        await client.destroy();
+      }
+      setLastQr(null);
+      setClientState('LOGGED_OUT');
+    } catch (e) {
+      console.warn('force-qr/logout warn:', e?.message || e);
+      setClientState('LOGOUT_FAILED');
     }
-    setLastQr(null);
-    setClientState('LOGGED_OUT');
-  } catch (e) {
-    console.warn('force-qr/logout warn:', e?.message || e);
-    setClientState('LOGOUT_FAILED');
-  }
+  });
 })();
 
