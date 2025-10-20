@@ -1,12 +1,33 @@
 # Dockerfile
 FROM node:20-slim
 
-# Instalar dependencias del sistema que requiere Chromium/Puppeteer
+# --- deps del sistema para Chromium y ffmpeg ---
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates fonts-liberation libasound2 libatk-bridge2.0-0 libatk1.0-0 \
-    libc6 libnspr4 libnss3 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxdamage1 \
-    libxext6 libxfixes3 libxrandr2 libgbm1 libgtk-3-0 libpango-1.0-0 libcairo2 \
-  && rm -rf /var/lib/apt/lists/*
+    chromium \
+    ca-certificates \
+    fonts-liberation \
+    libnss3 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxrandr2 \
+    libxss1 \
+    libxtst6 \
+    libasound2 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libcairo2 \
+    libgbm1 \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /usr/src/app
 

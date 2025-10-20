@@ -64,7 +64,7 @@ let client; // se inicializa dentro de la IIFE
     }),
     puppeteer: {
       headless: true,
-      executablePath: '/usr/bin/google-chrome', // ruta típica en Cloud Run
+      executablePath: process.env.CHROME_PATH ||'/usr/bin/chromium', // ruta típica en Cloud Run
       timeout: 60000, // 60s para iniciar el navegador
       args: [
         '--no-sandbox',
@@ -268,9 +268,18 @@ let client; // se inicializa dentro de la IIFE
   client.initialize();
 
   // permitir que server.js pueda forzar logout → nuevo QR
-  setLogoutFn(async () => {
-    await client.logout();
+setLogoutFn(async () => {
+  try {
+    if (client && typeof client.logout === 'function') {
+      await client.logout();
+    } else if (client && typeof client.destroy === 'function') {
+      await client.destroy();
+    }
     setLastQr(null);
     setClientState('LOGGED_OUT');
-  });
-})();
+  } catch (e) {
+    console.warn('force-qr/logout warn:', e?.message || e);
+    setClientState('LOGOUT_FAILED');
+  }
+});
+
