@@ -79,8 +79,8 @@ client = new Client({
       '--disable-software-rasterizer',
       '--window-size=1920,1080',
     ],
+
   },
-});
   takeoverOnConflict: true,
   takeoverTimeoutMs: 10000,
 });
