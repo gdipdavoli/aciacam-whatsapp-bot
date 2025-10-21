@@ -1,10 +1,14 @@
 # Imagen base ligera compatible con Puppeteer
 FROM node:18-slim
 
-# Instalar dependencias necesarias para Chromium portable
+# Instalar dependencias mínimas que necesita Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     fonts-liberation \
+    libasound2 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcairo2 \
     libnss3 \
     libx11-6 \
     libxcomposite1 \
@@ -14,27 +18,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrandr2 \
     libxss1 \
     libxtst6 \
-    libasound2 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libpangocairo-1.0-0 \
     libpango-1.0-0 \
-    libcairo2 \
+    libpangocairo-1.0-0 \
     libgbm1 \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
+
+# Copiar package.json primero para aprovechar cache
 COPY package*.json ./
-RUN npm install --production
+
+# Descargar Puppeteer con Chromium incluido
+RUN npm install puppeteer@22.15.0 --save \
+    && npm install --production
+
+# Copiar el resto del proyecto
 COPY . .
 
-CMD ["node", "server.js"]
+# Variables para Puppeteer dentro de Cloud Run
+ENV PUPPETEER_SKIP_DOWNLOAD=false
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/src/app/node_modules/puppeteer/.local-chromium/linux-127.0.6533.88/chrome-linux64/chrome
 
-
-ENV NODE_ENV=production
-ENV PORT=8080
+# Exponer puerto
 EXPOSE 8080
 
-# Importante: ejecutar server.js (que a su vez requiere ./whatsapp)
 CMD ["node", "server.js"]
+
