@@ -56,33 +56,31 @@ let client; // se inicializa dentro de la IIFE
 (async () => {
   await ensureStore();
 
-  client = new Client({
-    authStrategy: new RemoteAuth({
-      store,
-      clientId: process.env.CLIENT_ID || 'aciacam-oficial',
-      backupSyncIntervalMs: 300000, // 5 min
-    }),
-    puppeteer: {
-  headless: true,
-  executablePath: process.env.CHROME_PATH || '/usr/bin/chromium-browser',
-  args: [
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--disable-dev-shm-usage',
-    '--disable-extensions',
-    '--disable-gpu',
-    '--no-first-run',
-    '--no-default-browser-check',
-    '--disable-software-rasterizer',
-    '--disable-features=TranslateUI,BlinkGenPropertyTrees',
-    '--single-process',
-    '--disable-features=site-per-process',
-    '--disable-background-timer-throttling',
-    '--disable-renderer-backgrounding',
-    '--disable-backgrounding-occluded-windows',
-    '--window-size=1920,1080',
-  ],
-},
+  import puppeteer from 'puppeteer';
+
+client = new Client({
+  authStrategy: new RemoteAuth({
+    store,
+    clientId: process.env.CLIENT_ID || 'aciacam-oficial',
+    backupSyncIntervalMs: 300000,
+  }),
+  puppeteer: {
+    headless: true,
+    executablePath: puppeteer.executablePath(),
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-extensions',
+      '--disable-gpu',
+      '--no-first-run',
+      '--no-default-browser-check',
+      '--single-process',
+      '--disable-software-rasterizer',
+      '--window-size=1920,1080',
+    ],
+  },
+});
 
     takeoverOnConflict: true,
     takeoverTimeoutMs: 10_000,

@@ -1,11 +1,8 @@
-# Dockerfile
-FROM node:20-slim
+# Imagen base ligera compatible con Puppeteer
+FROM node:18-slim
 
-# Instalar Chromium (necesario para Puppeteer/whatsapp-web.js)
+# Instalar dependencias necesarias para Chromium portable
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    chromium \
-    chromium-common \
-    chromium-sandbox \
     ca-certificates \
     fonts-liberation \
     libnss3 \
@@ -27,13 +24,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-
 WORKDIR /usr/src/app
-
 COPY package*.json ./
-RUN npm ci --omit=dev
-
+RUN npm install --production
 COPY . .
+
+CMD ["node", "server.js"]
+
 
 ENV NODE_ENV=production
 ENV PORT=8080
