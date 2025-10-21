@@ -66,10 +66,7 @@ client = new Client({
   }),
   puppeteer: {
     headless: true,
-    executablePath:
-      process.env.CHROMIUM_PATH ||
-      process.env.PUPPETEER_EXECUTABLE_PATH ||
-      puppeteer.executablePath(), // fallback razonable
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -83,6 +80,7 @@ client = new Client({
       '--window-size=1920,1080',
     ],
   },
+});
   takeoverOnConflict: true,
   takeoverTimeoutMs: 10_000,
 });

@@ -1,14 +1,16 @@
-# Imagen base ligera compatible con Puppeteer
+# Base liviana compatible con Chromium
 FROM node:18-slim
 
-# Instalar dependencias mínimas que necesita Chromium
+# Paquetes que Chromium necesita para correr en serverless
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    chromium \
     ca-certificates \
     fonts-liberation \
     libasound2 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
     libcairo2 \
+    libgbm1 \
     libnss3 \
     libx11-6 \
     libxcomposite1 \
@@ -20,28 +22,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxtst6 \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
-    libgbm1 \
     wget \
-    && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/src/app
 
-# Copiar package.json primero para aprovechar cache
+# Instalar deps primero (aprovecha cache)
 COPY package*.json ./
-
-# Descargar Puppeteer con Chromium incluido
-RUN npm install puppeteer@22.15.0 --save \
-    && npm install --production
+RUN npm ci --omit=dev
 
 # Copiar el resto del proyecto
 COPY . .
 
-# Variables para Puppeteer dentro de Cloud Run
-ENV PUPPETEER_SKIP_DOWNLOAD=false
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/src/app/node_modules/puppeteer/.local-chromium/linux-127.0.6533.88/chrome-linux64/chrome
+# Decirle a whatsapp-web.js dónde está el binario del navegador
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Exponer puerto
 EXPOSE 8080
-
 CMD ["node", "server.js"]
+
 
