@@ -34,7 +34,8 @@ RUN npm ci --omit=dev
 # Copiar el resto del proyecto
 COPY . .
 
-# Decirle a whatsapp-web.js dónde está el binario del navegador
+# Fuerza a puppeteer/whatsapp-web.js a usar el Chromium del sistema
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 EXPOSE 8080
