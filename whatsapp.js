@@ -82,7 +82,7 @@ client = new Client({
   },
 });
   takeoverOnConflict: true,
-  takeoverTimeoutMs: 10_000,
+  takeoverTimeoutMs: 10000,
 });
 
   // ====== Eventos base / diagnóstico ======
