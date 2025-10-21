@@ -56,7 +56,8 @@ let client; // se inicializa dentro de la IIFE
 (async () => {
   await ensureStore();
 
-  import puppeteer from 'puppeteer';
+  const puppeteer = require('puppeteer');
+const { Client, RemoteAuth } = require('whatsapp-web.js');
 
 client = new Client({
   authStrategy: new RemoteAuth({
@@ -81,10 +82,6 @@ client = new Client({
     ],
   },
 });
-
-    takeoverOnConflict: true,
-    takeoverTimeoutMs: 10_000,
-  });
 
   // ====== Eventos base / diagnóstico ======
   client.on('qr', async (qr) => {
