@@ -63,19 +63,27 @@ let client; // se inicializa dentro de la IIFE
       backupSyncIntervalMs: 300000, // 5 min
     }),
     puppeteer: {
-      headless: true,
-      executablePath: process.env.CHROME_PATH ||'/usr/bin/chromium', // ruta típica en Cloud Run
-      timeout: 60000, // 60s para iniciar el navegador
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-extensions',
-        '--disable-gpu',
-        '--no-first-run',
-        '--no-default-browser-check',
-      ],
-    },
+  headless: true,
+  executablePath: process.env.CHROME_PATH || '/usr/bin/chromium-browser',
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-extensions',
+    '--disable-gpu',
+    '--no-first-run',
+    '--no-default-browser-check',
+    '--disable-software-rasterizer',
+    '--disable-features=TranslateUI,BlinkGenPropertyTrees',
+    '--single-process',
+    '--disable-features=site-per-process',
+    '--disable-background-timer-throttling',
+    '--disable-renderer-backgrounding',
+    '--disable-backgrounding-occluded-windows',
+    '--window-size=1920,1080',
+  ],
+},
+
     takeoverOnConflict: true,
     takeoverTimeoutMs: 10_000,
   });
