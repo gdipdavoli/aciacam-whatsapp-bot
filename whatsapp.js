@@ -1,6 +1,8 @@
 // whatsapp.js
+// whatsapp.js (modo CommonJS)
 require('dotenv').config();
 
+const puppeteer = require('puppeteer'); // <-- antes era "import"
 const { Client, RemoteAuth } = require('whatsapp-web.js');
 const { MongoStore } = require('wwebjs-mongo');
 const mongoose = require('mongoose');
@@ -56,9 +58,6 @@ let client; // se inicializa dentro de la IIFE
 (async () => {
   await ensureStore();
 
-  const puppeteer = require('puppeteer');
-const { Client, RemoteAuth } = require('whatsapp-web.js');
-
 client = new Client({
   authStrategy: new RemoteAuth({
     store,
@@ -67,7 +66,10 @@ client = new Client({
   }),
   puppeteer: {
     headless: true,
-    executablePath: puppeteer.executablePath(),
+    executablePath:
+      process.env.CHROMIUM_PATH ||
+      process.env.PUPPETEER_EXECUTABLE_PATH ||
+      puppeteer.executablePath(), // fallback razonable
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -81,6 +83,8 @@ client = new Client({
       '--window-size=1920,1080',
     ],
   },
+  takeoverOnConflict: true,
+  takeoverTimeoutMs: 10_000,
 });
 
   // ====== Eventos base / diagnóstico ======
