@@ -57,6 +57,10 @@ async function ensureStore() {
 let client; // se inicializa dentro de la IIFE
 (async () => {
   await ensureStore();
+const fs = require('fs');
+const CHROME_BIN = process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium' || '/usr/bin/chromium-browser';
+
+console.log('🧭 CHROME_BIN =', CHROME_BIN, 'exists?', fs.existsSync(CHROME_BIN));
 
 client = new Client({
   authStrategy: new RemoteAuth({
@@ -65,24 +69,26 @@ client = new Client({
     backupSyncIntervalMs: 300000,
   }),
   puppeteer: {
-    headless: true,
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-extensions',
-      '--disable-gpu',
-      '--no-first-run',
-      '--no-default-browser-check',
-      '--single-process',
-      '--disable-software-rasterizer',
-      '--window-size=1920,1080',
-    ],
+  headless: true,
+  executablePath:
+    process.env.PUPPETEER_EXECUTABLE_PATH ||
+    '/usr/bin/google-chrome-stable', // fallback
 
-  },
-  takeoverOnConflict: true,
-  takeoverTimeoutMs: 10000,
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-dev-shm-usage',
+    '--disable-extensions',
+    '--disable-gpu',
+    '--no-first-run',
+    '--no-default-browser-check',
+    '--single-process',
+    '--disable-software-rasterizer',
+    '--window-size=1920,1080',
+  ],
+},
+takeoverOnConflict: true,
+takeoverTimeoutMs: 10000,
 });
 
   // ====== Eventos base / diagnóstico ======

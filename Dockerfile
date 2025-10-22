@@ -1,44 +1,21 @@
-# Base liviana compatible con Chromium
-FROM node:18-slim
-
-# Paquetes que Chromium necesita para correr en serverless
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    chromium \
-    ca-certificates \
-    fonts-liberation \
-    libasound2 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcairo2 \
-    libgbm1 \
-    libnss3 \
-    libx11-6 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxrandr2 \
-    libxss1 \
-    libxtst6 \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    wget \
- && rm -rf /var/lib/apt/lists/*
+# Imagen con Chromium + dependencias preinstaladas
+FROM ghcr.io/puppeteer/puppeteer:22.7.1
 
 WORKDIR /usr/src/app
 
-# Instalar deps primero (aprovecha cache)
+# Instalar deps primero (cache)
 COPY package*.json ./
 RUN npm ci --omit=dev
 
-# Copiar el resto del proyecto
+# Copiar el proyecto
 COPY . .
 
-# Fuerza a puppeteer/whatsapp-web.js a usar el Chromium del sistema
-ENV PUPPETEER_SKIP_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+# Evita que Puppeteer intente descargar otro Chrome
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+# Ruta del Chrome dentro de esta imagen
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+ENV NODE_ENV=production
 
 EXPOSE 8080
 CMD ["node", "server.js"]
-
 
